@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, request_started
+from flask import Flask, render_template, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField
 from wtforms.validators import DataRequired
@@ -13,7 +13,7 @@ import os
 
 SECRET_KEY='5f352379324c22463451387a0aec5d2f'
 
-redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
+redis = Redis(host="172.22.0.4", db=0, socket_connect_timeout=2, socket_timeout=2)
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -22,19 +22,9 @@ class QuestForm(FlaskForm):
     username = StringField('Nombre de Usuario', validators=[DataRequired()])
     result = IntegerField('Resultado', validators=[DataRequired()])
     submit_result = SubmitField('Comprobar respuesta')
-    submit_ranking = SubmitField('Revisar ranking')
         
 class ReturnIndexForm(FlaskForm):
     return_submit = SubmitField('Volver al inicio')
-
-def add_headers(cursor):
-        data = []
-        headers = tuple([header[0] for header in cursor.description])
-        data.insert(0, headers)
-        results = [row for row in cursor.fetchall()]
-        data = data + results
-        
-        return data
 
 def register_user(db, cursor, user: str):
         query_user_exists = f"select id from JUGADORES where usuario = '{user}'"
@@ -151,7 +141,6 @@ def main():
         return render_template('quest.html', title='Pregunta', form=form, data=question)
         
 if __name__ == "__main__":
-        #app.run(host='0.0.0.0', port=80)
         app.run(host='0.0.0.0', port=5000)
 
         
