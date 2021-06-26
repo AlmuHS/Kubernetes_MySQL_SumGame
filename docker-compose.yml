@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+        database:
+                image: gamedb
+                container_name: mariagame
+                read_only: false
+                volumes:
+                        - gamedb-vol:/var/lib/mysql
+                networks:
+                        - mynet
+        redis:
+                image: redis
+                container_name: redis
+                volumes:
+                        - redis-vol:/data
+                networks:
+                        - mynet
+        webapp:
+                image: gameapp
+                container_name: webgame
+                ports:
+                        - "127.0.0.1:8080:5000"
+                environment:
+                        - MYSQL_HOST=mariagame
+                networks:
+                        - mynet
+                depends_on:
+                        - database
+                        - redis
+volumes:
+        gamedb-vol:
+                external: false
+        
+        redis-vol:
+                external: false
+networks:
+        mynet:
+                driver: bridge
