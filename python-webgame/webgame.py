@@ -8,8 +8,6 @@ from redis import Redis, RedisError
 from random import randint
 from datetime import datetime
 
-import requests
-
 import mysql.connector 
 import os
 
@@ -69,9 +67,25 @@ def update_points(cursor, user: str):
 def gen_numbers():
         num1 = randint(10, 30)
         num2 = randint(10, 30)
+        
+        client_ip = request.remote_addr
 
-        redis.set("num1", num1)
-        redis.set("num2", num2)
+        key1 = f"num1-{client_ip}"
+        key2 = f"num2-{client_ip}"
+
+        redis.set(key1, num1)
+        redis.set(key2, num2)
+
+def get_numbers():
+        client_ip = request.remote_addr
+
+        key1 = f"num1-{client_ip}"
+        key2 = f"num2-{client_ip}"
+
+        num1 = int(redis.get(key1))
+        num2 = int(redis.get(key2))
+        
+        return num1, num2
 
 @app.route("/", methods=['GET', 'POST'])
 def main():
@@ -97,8 +111,7 @@ def main():
                 if request.method == 'GET' or return_index.return_submit.data:
                         gen_numbers()
                         
-                num1 = int(redis.get("num1"))
-                num2 = int(redis.get("num2"))
+                num1, num2 = get_numbers()
                 
                 question = f"{num1} + {num2} = ?"
                 
