@@ -64,23 +64,25 @@ def update_points(cursor, user: str):
         cursor.execute(update_pt)
 
 
-def gen_numbers():
-        num1 = randint(10, 30)
-        num2 = randint(10, 30)
-        
+def get_keys():
         client_ip = request.remote_addr
 
         key1 = f"num1-{client_ip}"
         key2 = f"num2-{client_ip}"
+        
+        return key1, key2
+
+def gen_numbers():
+        num1 = randint(10, 30)
+        num2 = randint(10, 30)
+        
+        key1, key2 = get_keys()
 
         redis.set(key1, num1)
         redis.set(key2, num2)
 
 def get_numbers():
-        client_ip = request.remote_addr
-
-        key1 = f"num1-{client_ip}"
-        key2 = f"num2-{client_ip}"
+        key1, key2 = get_keys()
 
         num1 = int(redis.get(key1))
         num2 = int(redis.get(key2))
