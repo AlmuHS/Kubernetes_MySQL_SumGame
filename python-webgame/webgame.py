@@ -15,7 +15,7 @@ import os
 
 SECRET_KEY='5f352379324c22463451387a0aec5d2f'
 
-redis = Redis(host="172.17.0.2", db=0, socket_connect_timeout=2, socket_timeout=2)
+redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
