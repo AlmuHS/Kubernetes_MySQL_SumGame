@@ -107,31 +107,30 @@ def main():
        
         cursor = mydb.cursor()
         
-        if form.submit_result.data:
-                if form.validate_on_submit():
-                        try:
-                                register_user(mydb, cursor, form.username.data)
+        if form.submit_result.data and form.validate_on_submit():
+                try:
+                        register_user(mydb, cursor, form.username.data)
+                
+                        points = 0
+                        message = "Respuesta incorrecta :("
+                
+                        if num1 + num2 == form.result.data:
+                                print("Respuesta correcta")
+                                
+                                update_points(cursor, form.username.data)
+                                
+                                points = 5
+                                message = "Respuesta correcta!!"
                         
-                                points = 0
-                                message = "Respuesta incorrecta :("
+                        insert_game(cursor,form.username.data, points)
                         
-                                if num1 + num2 == form.result.data:
-                                        print("Respuesta correcta")
-                                        
-                                        update_points(cursor, form.username.data)
-                                        
-                                        points = 5
-                                        message = "Respuesta correcta!!"
-                                
-                                insert_game(cursor,form.username.data, points)
-                                
-                                mydb.commit()
-                                
-                                return render_template("message.html", data=message, form=return_index)
-                                
-                        except mysql.connector.Error as err:
-                                error_message = err.msg
-                                return render_template("error.html", data=error_message)
+                        mydb.commit()
+                        
+                        return render_template("message.html", data=message, form=return_index)
+                        
+                except mysql.connector.Error as err:
+                        error_message = err.msg
+                        return render_template("error.html", data=error_message)
         
         
         return render_template('quest.html', title='Pregunta', form=form, data=question)
