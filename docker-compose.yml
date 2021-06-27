@@ -26,7 +26,21 @@ services:
                         - mynet
                 depends_on:
                         - database
-                        - redis
+                        - redis           
+        ranking:
+                image: gameranking
+                container_name: ranking
+                environment:
+                        - MYSQL_HOST=mariagame
+                ports:
+                        - "127.0.0.1:8081:5001"
+                volumes:
+                        - gamedb-vol:/var/lib/mysql
+                networks:
+                        - mynet
+                depends_on:
+                        - database
+                        - webapp
 volumes:
         gamedb-vol:
                 external: false
