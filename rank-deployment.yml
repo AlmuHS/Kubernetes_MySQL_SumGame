@@ -15,11 +15,11 @@ spec:
         app: ranking
     spec:
       containers:
-      - image: almuhs/gameranking:v1
+      - image: almuhs/gameranking:v2
         name: ranking
         env:
                 - name: MYSQL_HOST
                   value: db
         ports:
-        - containerPort: 5001
+        - containerPort: 80
           name: ranking
