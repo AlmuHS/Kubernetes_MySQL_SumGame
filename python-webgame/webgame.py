@@ -58,11 +58,14 @@ def update_points(cursor, user: str):
 
 
 def get_keys():
-        client_ip = request.remote_addr
-        client_id = session['id']
+        client_id = session.get('id')
         
-        key1 = f"num1-{client_ip}-{client_id}"
-        key2 = f"num2-{client_ip}-{client_id}"
+        if not client_id:
+                session['id'] = getrandbits(10)
+                client_id = session_id
+        
+        key1 = f"num1-{client_id}"
+        key2 = f"num2-{client_id}"
         
         print(key1)
         
@@ -80,8 +83,15 @@ def gen_numbers():
 def get_numbers():
         key1, key2 = get_keys()
 
-        num1 = int(redis.get(key1))
-        num2 = int(redis.get(key2))
+        num1 = -1
+        num2 = -1
+        
+        value1 = redis.get(key1)
+        value2 = redis.get(key2)
+        
+        if value1 and value2:
+                num1 = int(value1)
+                num2 = int(value2)
         
         return num1, num2
 
