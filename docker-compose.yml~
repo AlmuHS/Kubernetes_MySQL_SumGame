@@ -17,10 +17,10 @@ services:
                 networks:
                         - mynet
         webapp:
-                image: almuhs/gameapp:v1
+                image: almuhs/gameapp:v2
                 container_name: webgame
                 ports:
-                        - "127.0.0.1:8080:5000"
+                        - "127.0.0.1:8080:80"
                 environment:
                         - MYSQL_HOST=mariagame
                 networks:
@@ -34,7 +34,7 @@ services:
                 environment:
                         - MYSQL_HOST=mariagame
                 ports:
-                        - "127.0.0.1:8081:5001"
+                        - "127.0.0.1:8081:80"
                 volumes:
                         - gamedb-vol:/var/lib/mysql
                 networks:
