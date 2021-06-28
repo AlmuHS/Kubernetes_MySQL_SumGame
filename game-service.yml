@@ -5,7 +5,7 @@ metadata:
     app: game
   name: game
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
   - name: "game-service"
     port: 80
