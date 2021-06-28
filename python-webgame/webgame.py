@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField
 from wtforms.validators import DataRequired
 
 from redis import Redis, RedisError
 
-from random import randint
+from random import randint, getrandbits
 from datetime import datetime
 
 import mysql.connector 
@@ -13,7 +13,7 @@ import os
 
 SECRET_KEY='5f352379324c22463451387a0aec5d2f'
 
-redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
+redis = Redis(host="172.20.0.2", db=0, socket_connect_timeout=2, socket_timeout=2)
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -56,9 +56,12 @@ def update_points(cursor, user: str):
 
 def get_keys():
         client_ip = request.remote_addr
-
-        key1 = f"num1-{client_ip}"
-        key2 = f"num2-{client_ip}"
+        client_id = request.cookies.get('id')
+        
+        key1 = f"num1-{client_ip}-{client_id}"
+        key2 = f"num2-{client_ip}-{client_id}"
+        
+        print(key1)
         
         return key1, key2
 
@@ -98,11 +101,18 @@ def main():
         num1 = 0
         num2 = 0
         question = ""
+        res = make_response()
         
         try:
+                if request.method == 'GET':
+                        client_id = getrandbits(50)
+                        print(client_id)
+                        
+                        res.set_cookie("id", value=str(client_id), domain='0.0.0.0')        
+        
                 if request.method == 'GET' or return_index.return_submit.data:
                         gen_numbers()
-                        
+                
                 num1, num2 = get_numbers()
                 
                 question = f"{num1} + {num2} = ?"
@@ -137,10 +147,10 @@ def main():
                         error_message = err.msg
                         return render_template("error.html", data=error_message)
         
-        
-        return render_template('quest.html', title='Pregunta', form=form, data=question)
+        res = make_response(render_template('quest.html', title='Pregunta', form=form, data=question))
+        return res
         
 if __name__ == "__main__":
-        app.run(host='0.0.0.0', port=80)
+        app.run(host='0.0.0.0', port=5000)
 
         
