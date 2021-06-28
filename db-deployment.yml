@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: db
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - image: almuhs/gamedb:v1
+        name: gamedb
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: db-data
+      volumes:
+      - name: db-data
+        emptyDir: {} 

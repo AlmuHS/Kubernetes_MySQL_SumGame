@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: game
+  name: game
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game
+  template:
+    metadata:
+      labels:
+        app: game
+    spec:
+      containers:
+      - image: almuhs/gameapp:v1
+        name: gameapp
+        ports:
+        - containerPort: 80
+          name: gameapp

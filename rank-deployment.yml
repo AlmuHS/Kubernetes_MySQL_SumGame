@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ranking
+  name: ranking
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ranking
+  template:
+    metadata:
+      labels:
+        app: ranking
+    spec:
+      containers:
+      - image: almuhs/gameranking:v1
+        name: ranking
+        ports:
+        - containerPort: 80
+          name: ranking
