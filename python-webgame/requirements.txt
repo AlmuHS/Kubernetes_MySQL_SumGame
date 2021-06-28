@@ -1,6 +1,7 @@
 flask
 wtforms
 flask_wtf
+flask_session
 mysql-connector
 redis
 requests

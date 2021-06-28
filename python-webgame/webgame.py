@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, session, redirect
 from flask_wtf import FlaskForm
+from flask_session import Session
 from wtforms import StringField, SubmitField, IntegerField
 from wtforms.validators import DataRequired
 
@@ -11,12 +12,14 @@ from datetime import datetime
 import mysql.connector 
 import os
 
-SECRET_KEY='5f352379324c22463451387a0aec5d2f'
-
-redis = Redis(host="172.20.0.2", db=0, socket_connect_timeout=2, socket_timeout=2)
+redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
 
 app = Flask(__name__)
+
+SECRET_KEY='5f352379324c22463451387a0aec5d2f'
 app.secret_key = SECRET_KEY
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
 class QuestForm(FlaskForm):
     username = StringField('Nombre de Usuario', validators=[DataRequired()])
@@ -56,7 +59,7 @@ def update_points(cursor, user: str):
 
 def get_keys():
         client_ip = request.remote_addr
-        client_id = request.cookies.get('id')
+        client_id = session['id']
         
         key1 = f"num1-{client_ip}-{client_id}"
         key2 = f"num2-{client_ip}-{client_id}"
@@ -82,7 +85,12 @@ def get_numbers():
         
         return num1, num2
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route('/')
+def set():
+    session['id'] = getrandbits(10)
+    return redirect("/game")
+
+@app.route("/game", methods=['GET', 'POST'])
 def main():
         form = QuestForm()
         return_index = ReturnIndexForm()
@@ -112,11 +120,6 @@ def main():
         except RedisError:
                 question = "<i>cannot connect to Redis</i>"
        
-        res = make_response(render_template('quest.html', title='Pregunta', form=form, data=question))
-        if request.method == 'GET' or not request.cookies.get('id'):
-                client_id = getrandbits(10)
-                res.set_cookie("id", str(client_id))
-       
         cursor = mydb.cursor()
         
         if form.submit_result.data and form.validate_on_submit():
@@ -144,9 +147,9 @@ def main():
                         error_message = err.msg
                         return render_template("error.html", data=error_message)
                         
-        return res
+        return render_template('quest.html', title='Pregunta', form=form, data=question)
         
 if __name__ == "__main__":
-        app.run(host='0.0.0.0', port=5000)
+        app.run(host='0.0.0.0', port=80)
 
         
