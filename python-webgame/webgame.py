@@ -101,24 +101,21 @@ def main():
         num1 = 0
         num2 = 0
         question = ""
-        res = make_response()
         
         try:
-                if request.method == 'GET':
-                        client_id = getrandbits(50)
-                        print(client_id)
-                        
-                        res.set_cookie("id", value=str(client_id), domain='0.0.0.0')        
-        
                 if request.method == 'GET' or return_index.return_submit.data:
                         gen_numbers()
                 
                 num1, num2 = get_numbers()
-                
                 question = f"{num1} + {num2} = ?"
                 
         except RedisError:
-                visits = "<i>cannot connect to Redis</i>"
+                question = "<i>cannot connect to Redis</i>"
+       
+        res = make_response(render_template('quest.html', title='Pregunta', form=form, data=question))
+        if request.method == 'GET' or not request.cookies.get('id'):
+                client_id = getrandbits(10)
+                res.set_cookie("id", str(client_id))
        
         cursor = mydb.cursor()
         
@@ -146,8 +143,7 @@ def main():
                 except mysql.connector.Error as err:
                         error_message = err.msg
                         return render_template("error.html", data=error_message)
-        
-        res = make_response(render_template('quest.html', title='Pregunta', form=form, data=question))
+                        
         return res
         
 if __name__ == "__main__":
