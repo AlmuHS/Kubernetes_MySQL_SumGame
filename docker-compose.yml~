@@ -1,8 +1,9 @@
 version: '3.3'
 services:
         database:
-                image: gamedb
+                image: almuhs/gamedb:v1
                 container_name: mariagame
+                hostname: mariagame
                 read_only: false
                 volumes:
                         - gamedb-vol:/var/lib/mysql
@@ -16,7 +17,7 @@ services:
                 networks:
                         - mynet
         webapp:
-                image: gameapp
+                image: almuhs/gameapp:v1
                 container_name: webgame
                 ports:
                         - "127.0.0.1:8080:5000"
@@ -28,7 +29,7 @@ services:
                         - database
                         - redis           
         ranking:
-                image: gameranking
+                image: almuhs/gameranking:v1
                 container_name: ranking
                 environment:
                         - MYSQL_HOST=mariagame
