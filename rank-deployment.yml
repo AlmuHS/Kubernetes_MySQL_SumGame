@@ -17,6 +17,9 @@ spec:
       containers:
       - image: almuhs/gameranking:v1
         name: ranking
+        env:
+                - name: MYSQL_HOST
+                  value: gamedb
         ports:
         - containerPort: 80
           name: ranking

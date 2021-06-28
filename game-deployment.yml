@@ -17,6 +17,9 @@ spec:
       containers:
       - image: almuhs/gameapp:v1
         name: gameapp
+        env:
+                - name: MYSQL_HOST
+                  value: gamedb
         ports:
         - containerPort: 80
           name: gameapp
