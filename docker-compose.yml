@@ -17,7 +17,7 @@ services:
                 networks:
                         - mynet
         webapp:
-                image: almuhs/gameapp:v2
+                image: almuhs/gameapp:v6
                 container_name: webgame
                 ports:
                         - "127.0.0.1:8080:80"
