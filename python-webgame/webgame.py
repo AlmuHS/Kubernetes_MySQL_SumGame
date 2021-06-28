@@ -118,7 +118,8 @@ def main():
                 question = f"{num1} + {num2} = ?"
                 
         except RedisError:
-                question = "<i>cannot connect to Redis</i>"
+                error_message = "cannot connect to Redis"
+                return render_template("error.html", data=error_message)
        
         cursor = mydb.cursor()
         
