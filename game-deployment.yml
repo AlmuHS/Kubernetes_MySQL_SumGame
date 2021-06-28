@@ -15,11 +15,11 @@ spec:
         app: game
     spec:
       containers:
-      - image: almuhs/gameapp:v1
+      - image: almuhs/gameapp:v2
         name: gameapp
         env:
                 - name: MYSQL_HOST
                   value: gamedb
         ports:
-        - containerPort: 5000
+        - containerPort: 80
           name: gameapp
