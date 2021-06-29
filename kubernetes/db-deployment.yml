@@ -15,7 +15,7 @@ spec:
         app: db
     spec:
       containers:
-      - image: almuhs/gamedb:v1
+      - image: almuhs/gamedb:v2
         name: gamedb
         ports:
         - containerPort: 3306

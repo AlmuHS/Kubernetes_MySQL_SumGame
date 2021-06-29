@@ -15,7 +15,7 @@ spec:
         app: game
     spec:
       containers:
-      - image: almuhs/gameapp:v6
+      - image: almuhs/gameapp:v7
         name: gameapp
         env:
                 - name: MYSQL_HOST

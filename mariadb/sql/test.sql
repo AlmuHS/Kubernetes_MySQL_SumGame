@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS GAMEDB;
 
 CREATE TABLE IF NOT EXISTS JUGADORES(
     id int AUTO_INCREMENT,
-    usuario varchar(20) UNIQUE NOT NULL,
+    usuario varchar(255) UNIQUE NOT NULL,
     puntos_totales int,
     PRIMARY KEY(id)
 );

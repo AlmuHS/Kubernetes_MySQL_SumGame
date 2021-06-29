@@ -23,7 +23,7 @@ Session(app)
 
 class QuestForm(FlaskForm):
     username = StringField('Nombre de Usuario', validators=[DataRequired()])
-    result = IntegerField('Resultado', validators=[DataRequired()])
+    result = StringField('Resultado', validators=[DataRequired()])
     submit_result = SubmitField('Comprobar respuesta')
         
 class ReturnIndexForm(FlaskForm):
@@ -140,13 +140,14 @@ def main():
                         points = 0
                         message = "Respuesta incorrecta :("
                 
-                        if num1 + num2 == form.result.data:
-                                print("Respuesta correcta")
-                                
-                                update_points(cursor, form.username.data)
-                                
-                                points = 5
-                                message = "Respuesta correcta!!"
+                        if (form.result.data.isdigit()):
+                                if num1 + num2 == int(form.result.data):
+                                        print("Respuesta correcta")
+                                        
+                                        update_points(cursor, form.username.data)
+                                        
+                                        points = 5
+                                        message = "Respuesta correcta!!"
                         
                         insert_game(cursor,form.username.data, points)
                         

@@ -1,7 +1,7 @@
 version: '3.3'
 services:
         database:
-                image: almuhs/gamedb:v1
+                image: almuhs/gamedb:v2
                 container_name: mariagame
                 hostname: mariagame
                 read_only: false
@@ -17,7 +17,7 @@ services:
                 networks:
                         - mynet
         webapp:
-                image: almuhs/gameapp:v6
+                image: almuhs/gameapp:v7
                 container_name: webgame
                 ports:
                         - "127.0.0.1:8080:80"
