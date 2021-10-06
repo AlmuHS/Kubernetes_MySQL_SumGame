@@ -1,16 +1,18 @@
-# Tarea: Kubernetes
+# Kubernetes Flask Game
 
-## Enunciado
+## Juego de sumas y restas desarrollado en Flask, y desplegado sobre Kubernetes
 
-Crea un clúster kubernetes en GCP (Google Kubernete Engine - GKE).
+## Introducción
 
-Desarrolla una aplicación basada en microservicios, usando un tecnología a tu elección, que se conecte a un almacenamiento redis y/o a una base de datos SQL o noSQL.  Utiliza como ejemplo la aplicación Vote-App (https://github.com/jluisalvarez/k8s-vote-app)
+Este proyecto consiste en un juego de preguntas y respuestas, que se ejecuta en forma de página web, con soporte para varios jugadores en paralelo.
 
-Utiliza los comandos para escalar la aplicación.
+La página web muestra un pequeño formulario, donde se nos preguntará el resultado de una operación matemática y nuestro nombre de usuario. Si acertamos, nos muestra un mensaje de "Resultado correcto", si fallamos otro de "Resultado incorrecto".
 
-Desarrolla nuevas versiones y utiliza las diferentes estrategias de despliegue de kubernetes.
+La aplicación cuenta con un ranking en el que se muestran los usuarios registrados y su puntuación. Las respuestas correctas suman 5 puntos, las incorrectas 0.
 
-Crea un repositorio Github con los ficheros yaml desarrollados y un fichero Readme.md describiendo el proceso de desarrollo, escalado y actualización de versiones  y copia la ruta al repositorio en esta tarea.
+Accediendo a otra página podemos ver el ranking con la lista de usuarios y sus puntuaciones, ordenados de mayor a menor.
+
+##
 
 ## Creación del cluster de Kubernetes en GCP
 
@@ -27,16 +29,6 @@ Y rellenamos el formulario con los datos del cluster
 Esto nos creará el cluster preconfigurado para añadir los servicios
 
 ![](docs/cluster1.png)
-
-## Desarrollo de la aplicación
-
-La aplicación que hemos desarrollado consiste en un juego de preguntas y respuestas.
-
-La página web muestra un pequeño formulario, donde se nos preguntará el resultado de una operación matemática y nuestro nombre de usuario. Si acertamos, nos muestra un mensaje de "Resultado correcto", si fallamos otro de "Resultado incorrecto".
-
-La aplicación cuenta con un ranking en el que se muestran los usuarios registrados y su puntuación. Las respuestas correctas suman 5 puntos, las incorrectas 0.
-
-Accediendo a otra página podemos ver el ranking con la lista de usuarios y sus puntuaciones, ordenados de mayor a menor.
 
 ### Implementación
 
